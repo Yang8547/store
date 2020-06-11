@@ -1,0 +1,22 @@
+{
+  "name": "storeapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yang8547/store.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Yang8547/store/issues"
+  },
+  "homepage": "https://github.com/Yang8547/store#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
