@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import Home from './pages/Home';
 import Product from './pages/Product';
 import './App.css';
@@ -42,14 +42,14 @@ function App() {
     </aside>
     <main className="main">
       <div className="content">
-      <switch>
+      <Switch>
         <Route exact path="/">
           <Home />
         </Route>
         <Route path="/product/:id">
           <Product />
         </Route>
-      </switch>
+      </Switch>
       </div>
 
     </main>
