@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import Home from './pages/Home';
 import Product from './pages/Product';
+import Cart from './pages/Cart';
 import './App.css';
 
 function App() {
@@ -43,11 +44,11 @@ function App() {
     <main className="main">
       <div className="content">
       <Switch>
-        <Route exact path="/">
-          <Home />
+        <Route exact path="/" component={Home}>
         </Route>
-        <Route path="/product/:id">
-          <Product />
+        <Route path="/product/:id" component={Product}>
+        </Route>
+        <Route path="/cart/:id" component={Cart}>
         </Route>
       </Switch>
       </div>

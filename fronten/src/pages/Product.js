@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react';
+import React,{useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
 import {Link} from 'react-router-dom';
 import {useSelector,useDispatch} from 'react-redux';
@@ -6,7 +6,7 @@ import productDetailRequest from '../redux/actions/productDetailAction';
 
 
 function Product(props){
-    //use the `useParams` hook here to access
+    // use the `useParams` hook here to access
     // the dynamic pieces of the URL.
     
     let {id} = useParams();
@@ -14,9 +14,16 @@ function Product(props){
     const {product,loading,error} = productDetailState;
     const dispatch = useDispatch();
 
+    // product quantity
+    const [qty, setQty] = useState(1);
+
     useEffect(()=>{
         dispatch(productDetailRequest(id));
     },[])
+
+    const handleAddToCart = ()=>{
+        props.history.push("/cart/"+id+"?qty="+qty)
+    }
     return(
     loading?<div>loading...</div>:
     error?<div>{error}</div>:
@@ -53,18 +60,15 @@ function Product(props){
                 Price: {product.price}
               </li>
               <li>
-                Status: {product.status}
+                Status: {product.countInStock>0? "Available":"Out of Stock"}
               </li>
               <li>
-                Qty: <select>
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
+                Qty: <select value={qty} onChange={e=>setQty(e.target.value)}>
+                  {[...Array(product.countInStock).keys()].map(i => <option key={i+1} value={i+1}>{i+1}</option>)}
                 </select>
               </li>
               <li>
-                <button className="button primary" >Add to Cart</button>
+                {product.countInStock>0 && <button onClick={handleAddToCart} className="button primary" >Add to Cart</button>}
               </li>
             </ul>
           </div>

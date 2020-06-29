@@ -40,7 +40,7 @@ module.exports = {
       brand: ' Nike',
       rating: 4.5,
       numReviews: 8,
-      countInStock: 6,
+      countInStock: 0,
     },
   ]
 }
