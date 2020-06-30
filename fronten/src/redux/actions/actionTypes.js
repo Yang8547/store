@@ -9,3 +9,4 @@ export const PRODUCT_DETAIL_FAIL = 'PRODUCT_DETAIL_FAIL';
 export const CART_ADD_ITEM = 'CART_ADD_ITEM';
 export const CART_REMOVE_ITEM = 'CART_REMOVE_ITEM';
 export const CART_UPDATE_QTY = 'CART_UPDATE_QTY';
+export const SHOW_CART = 'SHOW_CART';

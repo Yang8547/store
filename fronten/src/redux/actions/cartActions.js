@@ -1,4 +1,4 @@
-import {CART_ADD_ITEM,CART_REMOVE_ITEM,CART_UPDATE_QTY} from "./actionTypes";
+import {CART_ADD_ITEM,CART_REMOVE_ITEM,CART_UPDATE_QTY,SHOW_CART} from "./actionTypes";
 import axios from 'axios';
 import Cookies from 'js-cookie'
 
@@ -38,4 +38,12 @@ const updateCart = (productId, qty)=>{
     }
 }
 
-export {addToCart, removeFromCart, updateCart}
+const showCart = ()=>(dispatch, getState)=>{
+    const { cartReducer: { cartItems } } = getState();
+    dispatch({
+        type: SHOW_CART,
+        payload: cartItems
+    })
+}
+
+export {addToCart, removeFromCart, updateCart, showCart}

@@ -1,7 +1,11 @@
-import {CART_ADD_ITEM,CART_REMOVE_ITEM,CART_UPDATE_QTY} from '../actions/actionTypes';
+import {CART_ADD_ITEM,CART_REMOVE_ITEM,CART_UPDATE_QTY,SHOW_CART} from '../actions/actionTypes';
 
 const cartReducer = (state={cartItems:[]}, action) => {
     switch(action.type) {
+        case SHOW_CART:
+            return {
+                cartItems:action.payload
+            }
         case CART_ADD_ITEM:
             const product = state.cartItems.find(x=>x._id==action.payload._id);
             if(product){

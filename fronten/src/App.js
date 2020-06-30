@@ -23,7 +23,7 @@ function App() {
         <Link to="/">store</Link>
       </div>
       <div className="header-links">
-        <a href="cart.html">Cart</a>
+        <Link to="/cart">Cart</Link>
         <a href="signin.html">Sign In</a>
       </div>
     </header>
@@ -48,7 +48,7 @@ function App() {
         </Route>
         <Route path="/product/:id" component={Product}>
         </Route>
-        <Route path="/cart/:id" component={Cart}>
+        <Route path="/cart" component={Cart}>
         </Route>
       </Switch>
       </div>

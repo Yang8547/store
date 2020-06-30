@@ -3,6 +3,7 @@ import {useParams} from 'react-router-dom';
 import {Link} from 'react-router-dom';
 import {useSelector,useDispatch} from 'react-redux';
 import productDetailRequest from '../redux/actions/productDetailAction';
+import {addToCart} from '../redux/actions/cartActions';
 
 
 function Product(props){
@@ -21,8 +22,10 @@ function Product(props){
         dispatch(productDetailRequest(id));
     },[])
 
-    const handleAddToCart = ()=>{
-        props.history.push("/cart/"+id+"?qty="+qty)
+    const handleAddToCart = (productId,qty)=>{
+        // props.history.push("/cart/"+id+"?qty="+qty)
+        dispatch(addToCart(productId,qty))
+        window.confirm('Added!')
     }
     return(
     loading?<div>loading...</div>:
@@ -68,7 +71,7 @@ function Product(props){
                 </select>
               </li>
               <li>
-                {product.countInStock>0 && <button onClick={handleAddToCart} className="button primary" >Add to Cart</button>}
+                {product.countInStock>0 && <button onClick={e=>handleAddToCart(product._id,qty)} className="button primary" >Add to Cart</button>}
               </li>
             </ul>
           </div>
