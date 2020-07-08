@@ -1,7 +1,7 @@
-import React,{ useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import {showCart,removeFromCart,updateCart} from '../redux/actions/cartActions';
+import {removeFromCart,updateCart} from '../redux/actions/cartActions';
 
 function Cart(props) {
 
@@ -14,13 +14,6 @@ function Cart(props) {
 
     
     const dispatch = useDispatch();
-
-    useEffect(()=>{
-        // if(productId){
-        //     dispatch(addToCart(productId,qty))
-        // }
-        dispatch(showCart())
-    },[]);
 
     const removeFromCartHandler = (productId) => {
         dispatch(removeFromCart(productId));
