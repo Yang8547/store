@@ -7,6 +7,7 @@ const productRouter = require('./routes/productRouter');
 
 // connect mongo DB
 const mongodbUrl = config.MONGODB_URL;
+
 mongoose.connect(mongodbUrl,{
     useNewUrlParser: true
 }).then(()=>{

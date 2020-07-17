@@ -25,9 +25,8 @@ router.post('/addProduct', (req,res)=>{
 
 router.get('/',(req,res)=>{
     productModel.find().then(data=>{
-            res.send(data)
-        }     
-    ).catch(error=>{
+        res.send(data)
+    }).catch(error=>{
         console.error(error.message)
     })
 })
