@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Redirect, Switch } from "react-router-d
 import './App.css';
 import Admin from './pages/admin';
 import Main from './pages/main';
+import Login from './pages/login'
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         </Route>
         <Route path="/admin" component={Admin}>
         </Route>
+        <Route path="/login" component={Login} />
       </Switch>
 
   </Router>

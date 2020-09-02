@@ -4,12 +4,7 @@ import "./left-nav.css";
 import logo from "../pages/images/logo.jpg";
 import { Menu } from "antd";
 import {
-  AppstoreOutlined,
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
   PieChartOutlined,
-  DesktopOutlined,
-  ContainerOutlined,
   MailOutlined
 } from "@ant-design/icons";
 
@@ -17,9 +12,9 @@ const { SubMenu } = Menu;
 
 const LeftNav = () => {
   return (
-    <div to="/admin" className="left-nav">
+    <div className="left-nav">
       {/* header */}
-      <Link to="/admin" className="left-nav-header">
+      <Link to="/admin/home" className="left-nav-header">
         <img src={logo} alt="" />
         <h1>Back Office</h1>
       </Link>
@@ -27,7 +22,6 @@ const LeftNav = () => {
       {/* menu */}
       <Menu
         defaultSelectedKeys={["1"]}
-        defaultOpenKeys={["sub1"]}
         mode="inline"
         theme="dark"
       >
