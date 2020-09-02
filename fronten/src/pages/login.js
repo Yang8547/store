@@ -1,15 +1,38 @@
 import React, { useState, useEffect } from "react";
+import { Redirect } from "react-router-dom";
 import logo from "./images/logo.jpg";
 import "./style/login.css";
-import { Form, Input, Button, Checkbox } from "antd";
+import { Form, Input, Button, message } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import ajax from "../api/ajax";
+import Cookies from "js-cookie";
 
 function Login(props) {
-  const onFinish = values => {
-    console.log("Received values of form: ", values);
+  const onFinish = async values => {
+    // console.log("Received values of form: ", values);
+    //登录
+    const { username, password } = values;
+    const result = await ajax("/login", { username, password }, "POST");
+    console.log(result);
+    //登录成功
+    if (result.status == 0) {
+      message.success("Login Successful!");
+      // add userinfo to cookie
+      Cookies.set("userinfo", JSON.stringify(result.data));
+      // 跳转到主页面
+      props.history.replace("/admin");
+    } else {
+      //登录失败
+      message.error("username or password not correct");
+    }
   };
 
-  return (
+  // check useinfo, if userinfo redirect to admin home
+  // 如果已经登录，自动从login跳转到adminhome
+  const userinfo = Cookies.getJSON("userinfo") || {};
+  return userinfo._id ? (
+    <Redirect to="/admin" />
+  ) : (
     <div>
       <header className="login-header">
         <img src={logo} alt="logo" />
@@ -45,8 +68,7 @@ function Login(props) {
             rules={[
               {
                 required: true,
-                message:
-                  "Please input your Password!"
+                message: "Please input your Password!"
               },
               {
                 min: 4,
