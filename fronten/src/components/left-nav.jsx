@@ -3,10 +3,7 @@ import { Link } from "react-router-dom";
 import "./left-nav.css";
 import logo from "../pages/images/logo.jpg";
 import { Menu } from "antd";
-import {
-  PieChartOutlined,
-  MailOutlined
-} from "@ant-design/icons";
+import { PieChartOutlined, MailOutlined } from "@ant-design/icons";
 
 const { SubMenu } = Menu;
 
@@ -20,18 +17,24 @@ const LeftNav = () => {
       </Link>
       {/* header end */}
       {/* menu */}
-      <Menu
-        defaultSelectedKeys={["1"]}
-        mode="inline"
-        theme="dark"
-      >
-        <Menu.Item key="1" icon={<PieChartOutlined />}>
-          HOME
+      <Menu defaultSelectedKeys={["1"]} mode="inline" theme="dark">
+        <Menu.Item key="/admin/home" icon={<PieChartOutlined />}>
+          <Link to="/admin/home">HOME</Link>
         </Menu.Item>
-        <SubMenu key="sub1" icon={<MailOutlined />} title="Navigation One">
-          <Menu.Item key="5" icon={<MailOutlined />}>Categories</Menu.Item>
-          <Menu.Item key="6" icon={<MailOutlined />}>Products</Menu.Item>
+        <SubMenu key="sub1" icon={<MailOutlined />} title="PRODUCTS">
+          <Menu.Item key="5" icon={<MailOutlined />}>
+            <Link to="/admin/category">Categories</Link>
+          </Menu.Item>
+          <Menu.Item key="6" icon={<MailOutlined />}>
+            <Link to="/admin/product">Products</Link>
+          </Menu.Item>
         </SubMenu>
+        <Menu.Item key="/admin/user" icon={<PieChartOutlined />}>
+          <Link to="/admin/user">USER</Link>
+        </Menu.Item>
+        <Menu.Item key="/admin/role" icon={<PieChartOutlined />}>
+          <Link to="/admin/role">ROLE</Link>
+        </Menu.Item>
       </Menu>
       {/* menu end */}
     </div>
