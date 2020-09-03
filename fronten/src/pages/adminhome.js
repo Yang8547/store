@@ -15,7 +15,7 @@ import Pie from "./admin-contents/pie";
 import NotFound from "./admin-contents/not-found";
 import Order from "./admin-contents/order";
 
-function Adminhome() {
+const Adminhome = props => {
   const { Footer, Sider, Content } = Layout;
   const userinfo = Cookies.getJSON("userinfo") || {};
   return !userinfo._id ? (
@@ -52,6 +52,6 @@ function Adminhome() {
       </Layout>
     </>
   );
-}
+};
 
 export default Adminhome;

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import "./left-nav.css";
 import logo from "../pages/images/logo.jpg";
 import { Menu } from "antd";
@@ -8,7 +8,7 @@ import menuList from "../config/menucofig";
 
 const { SubMenu } = Menu;
 
-const LeftNav = () => {
+const LeftNav = (props) => {
   // load menu list using map and recursion
   const loadMenuList_map = menuList => {
     return menuList.map(item => {
@@ -47,6 +47,10 @@ const LeftNav = () => {
     }, []);
   };
 
+  // get current route path
+  const path = props.location.pathname;
+  console.log('path',path);
+  
   return (
     <div className="left-nav">
       {/* header */}
@@ -56,7 +60,9 @@ const LeftNav = () => {
       </Link>
       {/* header end */}
       {/* menu */}
-      <Menu defaultSelectedKeys={["/admin/home"]} mode="inline" theme="dark">
+      {/* 不用defaultSelectedKeys因为只在初始选择一遍 */}
+      {/* 用selectedKeys会自动根据value变换*/}
+      <Menu selectedKeys={[path]} mode="inline" theme="dark">
         {loadMenuList(menuList)}
       </Menu>
       {/* menu end */}
@@ -64,4 +70,4 @@ const LeftNav = () => {
   );
 };
 
-export default LeftNav;
+export default withRouter(LeftNav);
