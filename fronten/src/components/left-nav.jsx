@@ -4,10 +4,29 @@ import "./left-nav.css";
 import logo from "../pages/images/logo.jpg";
 import { Menu } from "antd";
 import { PieChartOutlined, MailOutlined } from "@ant-design/icons";
+import menuList from "../config/menucofig";
 
 const { SubMenu } = Menu;
 
 const LeftNav = () => {
+  // load menu list using map and recursion
+  const loadMenuList = menuList => {
+    return menuList.map(item => {
+      if (!item.children) {
+        return (
+          <Menu.Item key={item.key} icon={item.icon}>
+            <Link to={item.key}>{item.title}</Link>
+          </Menu.Item>
+        );
+      } else {
+        return(
+          <SubMenu key={item.key} icon={item.icon} title={item.title}>
+           {loadMenuList(item.children)}
+          </SubMenu>
+        )
+      }
+    });
+  };
   return (
     <div className="left-nav">
       {/* header */}
@@ -18,23 +37,7 @@ const LeftNav = () => {
       {/* header end */}
       {/* menu */}
       <Menu defaultSelectedKeys={["1"]} mode="inline" theme="dark">
-        <Menu.Item key="/admin/home" icon={<PieChartOutlined />}>
-          <Link to="/admin/home">HOME</Link>
-        </Menu.Item>
-        <SubMenu key="sub1" icon={<MailOutlined />} title="PRODUCTS">
-          <Menu.Item key="5" icon={<MailOutlined />}>
-            <Link to="/admin/category">Categories</Link>
-          </Menu.Item>
-          <Menu.Item key="6" icon={<MailOutlined />}>
-            <Link to="/admin/product">Products</Link>
-          </Menu.Item>
-        </SubMenu>
-        <Menu.Item key="/admin/user" icon={<PieChartOutlined />}>
-          <Link to="/admin/user">USER</Link>
-        </Menu.Item>
-        <Menu.Item key="/admin/role" icon={<PieChartOutlined />}>
-          <Link to="/admin/role">ROLE</Link>
-        </Menu.Item>
+        {loadMenuList(menuList)}
       </Menu>
       {/* menu end */}
     </div>
