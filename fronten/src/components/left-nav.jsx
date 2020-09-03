@@ -10,7 +10,7 @@ const { SubMenu } = Menu;
 
 const LeftNav = () => {
   // load menu list using map and recursion
-  const loadMenuList = menuList => {
+  const loadMenuList_map = menuList => {
     return menuList.map(item => {
       if (!item.children) {
         return (
@@ -19,14 +19,34 @@ const LeftNav = () => {
           </Menu.Item>
         );
       } else {
-        return(
+        return (
           <SubMenu key={item.key} icon={item.icon} title={item.title}>
-           {loadMenuList(item.children)}
+            {loadMenuList(item.children)}
           </SubMenu>
-        )
+        );
       }
     });
   };
+  // load menu list using reduce and recursion
+  const loadMenuList = menuList => {
+    return menuList.reduce((pre, item) => {
+      if (!item.children) {
+        pre.push(
+          <Menu.Item key={item.key} icon={item.icon}>
+            <Link to={item.key}>{item.title}</Link>
+          </Menu.Item>
+        );
+      } else {
+        pre.push(
+          <SubMenu key={item.key} icon={item.icon} title={item.title}>
+            {loadMenuList(item.children)}
+          </SubMenu>
+        );
+      }
+      return pre;
+    }, []);
+  };
+
   return (
     <div className="left-nav">
       {/* header */}
@@ -36,7 +56,7 @@ const LeftNav = () => {
       </Link>
       {/* header end */}
       {/* menu */}
-      <Menu defaultSelectedKeys={["1"]} mode="inline" theme="dark">
+      <Menu defaultSelectedKeys={["/admin/home"]} mode="inline" theme="dark">
         {loadMenuList(menuList)}
       </Menu>
       {/* menu end */}
