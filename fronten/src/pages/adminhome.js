@@ -28,7 +28,7 @@ const Adminhome = props => {
         </Sider>
         <Layout>
           <Header />
-          <Content style={{ backgroundColor: "#fff" }}>
+          <Content style={{ margin:20,backgroundColor: "#fff" }}>
             <Switch>
               <Route path="/admin/home" component={Home} />
               <Route path="/admin/category" component={Category} />
