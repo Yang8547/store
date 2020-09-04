@@ -10,6 +10,7 @@ retrun promise object
 
 import axios from 'axios'
 import {message} from 'antd'
+import jsonp from 'jsonp'
 
 export default function ajax(url, data={}, type='GET') {
 
@@ -34,4 +35,28 @@ export default function ajax(url, data={}, type='GET') {
   })
 
 
+}
+
+/*
+jsonp get weather
+ */
+export const reqWeather = (city) => {
+
+  return new Promise((resolve, reject) => {
+    const url = `http://api.map.baidu.com/telematics/v3/weather?location=${city}&output=json&ak=3p49MVra6urFRGOT9s8UBWr2`
+    // send jsonp request
+    jsonp(url, {}, (err, data) => {
+      // console.log('jsonp()', err, data)
+      // success
+      if (!err && data.status==='success') {
+        // get data
+        const {dayPictureUrl, weather} = data.results[0].weather_data[0]
+        resolve({dayPictureUrl, weather})
+      } else {
+        // fail
+        message.error('get weather info fail!')
+      }
+
+    })
+  })
 }
