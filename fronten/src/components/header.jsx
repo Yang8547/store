@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { getKeyThenIncreaseKey } from "antd/lib/message";
-
+import {withRouter} from 'react-router-dom';
 import "./header.css";
 import Cookies from "js-cookie";
 import { reqWeather } from "../api/ajax";
+import menuList from "../config/menucofig";
 
 const Header = props => {
   const [currentTime, setCurrenTime] = useState(formateDate(Date.now()));
@@ -28,6 +29,24 @@ const Header = props => {
     );
   }
 
+  // get the title and display on header
+  const getTitle = ()=> {
+    const path = props.location.pathname;
+    let title;
+    menuList.forEach(item => {
+      if (item.key===path) { // if current path equals item key, the title is current item key
+        title = item.title
+      } else if (item.children) {
+        //  find title in children
+        const cItem = item.children.find(cItem => path.indexOf(cItem.key)===0)
+        if(cItem) {
+          title = cItem.title
+        }
+      }
+    })
+    return title
+  }
+
   useEffect(() => {
     // update time each 1 second
     setInterval(() => {
@@ -42,6 +61,7 @@ const Header = props => {
   }, []);
 
   const userinfo = Cookies.getJSON("userinfo") || {};
+  const title = getTitle();
   return (
     <div className="admin-header">
       <div className="admin-header-top">
@@ -49,7 +69,7 @@ const Header = props => {
         <a href="javascript:">sign out</a>
       </div>
       <div className="admin-header-bottom">
-        <div className="admin-header-bottom-left">HOME</div>
+        <div className="admin-header-bottom-left">{title}</div>
         <div className="admin-header-bottom-right">
           <span>{currentTime}</span>
           <img src={dayPictureUrl} alt="" />
@@ -60,4 +80,4 @@ const Header = props => {
   );
 };
 
-export default Header;
+export default withRouter(Header);
