@@ -7,6 +7,7 @@ import "./header.css";
 import Cookies from "js-cookie";
 import { reqWeather } from "../api/ajax";
 import menuList from "../config/menucofig";
+import LinkedButton from './linked-button'
 
 
 
@@ -90,7 +91,7 @@ const Header = props => {
     <div className="admin-header">
       <div className="admin-header-top">
         <span>Welcome,{userinfo.username}</span>
-        <a href="" onClick={handleLogout}>sign out</a>
+        <LinkedButton onClick={handleLogout}>sign out</LinkedButton>
       </div>
       <div className="admin-header-bottom">
         <div className="admin-header-bottom-left">{title}</div>
