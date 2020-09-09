@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { getKeyThenIncreaseKey } from "antd/lib/message";
 import {withRouter} from 'react-router-dom';
+import { Modal } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 import "./header.css";
 import Cookies from "js-cookie";
 import { reqWeather } from "../api/ajax";
 import menuList from "../config/menucofig";
+
+
 
 const Header = props => {
   const [currentTime, setCurrenTime] = useState(formateDate(Date.now()));
@@ -46,10 +50,26 @@ const Header = props => {
     })
     return title
   }
+  // handle signout modal
+  const handleLogout = (e) => {
+    e.preventDefault();
+    Modal.confirm({
+      title: 'Do you Want to Logout?',
+      icon: <ExclamationCircleOutlined />,
+      onOk() {
+        // console.log('OK');
+        Cookies.remove('userinfo'); //remove useinfo 
+        props.history.replace('/admin/login') //redirect to login page
+      },
+      onCancel() {
+        // console.log('Cancel');
+      },
+    });
+  }
 
   useEffect(() => {
     // update time each 1 second
-    setInterval(() => {
+    const interval = setInterval(() => {
       setCurrenTime(formateDate(Date.now()));
     }, 1000);
     // get weather info
@@ -58,6 +78,10 @@ const Header = props => {
       setDayPictureUrl(res.dayPictureUrl);
       setWeather(res.weather);
     });
+    // unmount
+    return () => {
+      clearInterval(interval)
+    }
   }, []);
 
   const userinfo = Cookies.getJSON("userinfo") || {};
@@ -66,7 +90,7 @@ const Header = props => {
     <div className="admin-header">
       <div className="admin-header-top">
         <span>Welcome,{userinfo.username}</span>
-        <a href="javascript:">sign out</a>
+        <a href="" onClick={handleLogout}>sign out</a>
       </div>
       <div className="admin-header-bottom">
         <div className="admin-header-bottom-left">{title}</div>
