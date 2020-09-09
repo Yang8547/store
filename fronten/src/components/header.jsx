@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { getKeyThenIncreaseKey } from "antd/lib/message";
-import {withRouter} from 'react-router-dom';
-import { Modal } from 'antd';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { withRouter } from "react-router-dom";
+import { Modal } from "antd";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
 import "./header.css";
 import Cookies from "js-cookie";
 import { reqWeather } from "../api/ajax";
 import menuList from "../config/menucofig";
-import LinkedButton from './linked-button'
-
-
+import LinkedButton from "./linked-button";
 
 const Header = props => {
   const [currentTime, setCurrenTime] = useState(formateDate(Date.now()));
@@ -35,38 +33,41 @@ const Header = props => {
   }
 
   // get the title and display on header
-  const getTitle = ()=> {
+  const getTitle = () => {
     const path = props.location.pathname;
     let title;
     menuList.forEach(item => {
-      if (item.key===path) { // if current path equals item key, the title is current item key
-        title = item.title
+      if (item.key === path) {
+        // if current path equals item key, the title is current item key
+        title = item.title;
       } else if (item.children) {
         //  find title in children
-        const cItem = item.children.find(cItem => path.indexOf(cItem.key)===0)
-        if(cItem) {
-          title = cItem.title
+        const cItem = item.children.find(
+          cItem => path.indexOf(cItem.key) === 0
+        );
+        if (cItem) {
+          title = cItem.title;
         }
       }
-    })
-    return title
-  }
+    });
+    return title;
+  };
   // handle signout modal
-  const handleLogout = (e) => {
+  const handleLogout = e => {
     e.preventDefault();
     Modal.confirm({
-      title: 'Do you Want to Logout?',
+      title: "Do you Want to Logout?",
       icon: <ExclamationCircleOutlined />,
       onOk() {
         // console.log('OK');
-        Cookies.remove('userinfo'); //remove useinfo 
-        props.history.replace('/admin/login') //redirect to login page
+        Cookies.remove("userinfo"); //remove useinfo
+        props.history.replace("/admin/login"); //redirect to login page
       },
       onCancel() {
         // console.log('Cancel');
-      },
+      }
     });
-  }
+  };
 
   useEffect(() => {
     // update time each 1 second
@@ -81,8 +82,8 @@ const Header = props => {
     });
     // unmount
     return () => {
-      clearInterval(interval)
-    }
+      clearInterval(interval);
+    };
   }, []);
 
   const userinfo = Cookies.getJSON("userinfo") || {};
