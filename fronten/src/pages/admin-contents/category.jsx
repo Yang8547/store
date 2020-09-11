@@ -3,6 +3,8 @@ import { Card, Button, Table, Space, Modal } from "antd";
 import { PlusOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import { reqCategorys } from "../../api";
 import LinkedButton from "../../components/linked-button";
+import UpdateForm from './category-update-form'
+import AddForm from './category-add-form'
 
 const Category = () => {
   const [categorys, setCategorys] = useState([]); //category list
@@ -102,7 +104,7 @@ const Category = () => {
         onOk={handleAddCat}
         onCancel={() => setShowModal(0)}
       >
-        <p>ADD CATEGORY</p>
+        <AddForm />
       </Modal>
       {/* Edit Modal */}
       <Modal
@@ -111,7 +113,7 @@ const Category = () => {
         onOk={handleUpdateCat}
         onCancel={() => setShowModal(0)}
       >
-        <p>EDIT CATEGORY</p>
+        <UpdateForm />
       </Modal>
     </>
   );
