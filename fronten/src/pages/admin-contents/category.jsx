@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, Button, Table, Space } from "antd";
+import { Card, Button, Table, Space, Modal } from "antd";
 import { PlusOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import { reqCategorys } from "../../api";
 import LinkedButton from "../../components/linked-button";
@@ -9,6 +9,7 @@ const Category = () => {
   const [loading, setLoading] = useState(false); //loading status
   const [parentId, setParentId] = useState("0"); //parent id will triger fetch data
   const [parentName, setParentName] = useState(""); //parent name display on table header
+  const [showModal, setShowModal] = useState(0); //control visibility of modal 0 invisible 1 show add modal 2 show edit modal
 
   //   update parentId then triger update
   const showSubCategory = category => {
@@ -20,6 +21,17 @@ const Category = () => {
   const showCategorys = () => {
     setParentId("0"); //   update parentId then triger update
     setParentName("");
+  };
+
+  //   add category
+  const handleAddCat = () => {
+    console.log("handleAddCat");
+    setShowModal(0);
+  };
+  //   update category
+  const handleUpdateCat = () => {
+    console.log("handleUpdateCat");
+    setShowModal(0);
   };
 
   //   card header
@@ -34,7 +46,7 @@ const Category = () => {
       </>
     );
   const extra = (
-    <Button type="primary">
+    <Button type="primary" onClick={() => setShowModal(1)}>
       <PlusOutlined />
       ADD
     </Button>
@@ -51,9 +63,10 @@ const Category = () => {
       width: "30%",
       render: record => (
         <Space size="middle">
-          <a>Edit</a>
-          {parentId =="0" ? <a onClick={() => showSubCategory(record)}>Sub-Category</a> : null}
-          
+          <a onClick={() => setShowModal(2)}>Edit</a>
+          {parentId == "0" ? (
+            <a onClick={() => showSubCategory(record)}>Sub-Category</a>
+          ) : null}
         </Space>
       )
     }
@@ -70,17 +83,37 @@ const Category = () => {
   }, [parentId]); // parentId update will cause fetch data
 
   return (
-    <Card title={title} extra={extra}>
-      {/* is dataSource[i].key not provide，use rowKey to asign the key */}
-      <Table
-        loading={loading}
-        pagination={{ defaultPageSize: 3, showQuickJumper: true }}
-        rowKey="_id"
-        bordered
-        columns={columns}
-        dataSource={categorys}
-      />
-    </Card>
+    <>
+      <Card title={title} extra={extra}>
+        {/* is dataSource[i].key not provide，use rowKey to asign the key */}
+        <Table
+          loading={loading}
+          pagination={{ defaultPageSize: 3, showQuickJumper: true }}
+          rowKey="_id"
+          bordered
+          columns={columns}
+          dataSource={categorys}
+        />
+      </Card>
+      {/* ADD Modal */}
+      <Modal
+        title="ADD CATEGORY"
+        visible={showModal === 1}
+        onOk={handleAddCat}
+        onCancel={() => setShowModal(0)}
+      >
+        <p>ADD CATEGORY</p>
+      </Modal>
+      {/* Edit Modal */}
+      <Modal
+        title="EDIT CATEGORY"
+        visible={showModal === 2}
+        onOk={handleUpdateCat}
+        onCancel={() => setShowModal(0)}
+      >
+        <p>EDIT CATEGORY</p>
+      </Modal>
+    </>
   );
 };
 
