@@ -52,7 +52,8 @@ const Category = () => {
       render: record => (
         <Space size="middle">
           <a>Edit</a>
-          <a onClick={() => showSubCategory(record)}>Sub-Category</a>
+          {parentId =="0" ? <a onClick={() => showSubCategory(record)}>Sub-Category</a> : null}
+          
         </Space>
       )
     }
