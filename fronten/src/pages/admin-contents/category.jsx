@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, Button, Table, Space, Modal,message } from "antd";
+import { Card, Button, Table, Space, Modal, message } from "antd";
 import { PlusOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import { reqCategorys, reqUpdateCategory } from "../../api";
 import LinkedButton from "../../components/linked-button";
@@ -15,7 +15,6 @@ const Category = () => {
   const [formUpdate, setFormUpdate] = useState(); // update form
   const [reload, setReload] = useState(0);
   const [currentCategory, setCurrentCategory] = useState();
-
 
   //   update parentId then triger update
   const showSubCategory = category => {
@@ -41,19 +40,25 @@ const Category = () => {
   };
   //   update category
   const handleUpdateCat = () => {
-    const categoryName = formUpdate.getFieldsValue().new_cat_name;
-    const categoryId = currentCategory._id;
-    reqUpdateCategory({ categoryId, categoryName }).then(res => {
-      if(res.status==0){
-        message.success('Update Success!');
-      }
-      setReload(!reload); // refresh page
-    //   formUpdate.resetFields() //reset filds, otherwise will cause field value remain the last update value
-    });
-    // console.log("formUpdate",formUpdate);
-    // console.log(formUpdate.getFieldsValue());
+    //   validation and update
+    formUpdate
+      .validateFields()
+      .then(values => {
+        const categoryName = formUpdate.getFieldsValue().new_cat_name;
+        const categoryId = currentCategory._id;
+        reqUpdateCategory({ categoryId, categoryName }).then(res => {
+          if (res.status == 0) {
+            message.success("Update Success!");
+          }
+          setReload(!reload); // refresh page
+          //   formUpdate.resetFields() //reset filds, otherwise will cause field value remain the last update value
+        });
+        // console.log("formUpdate",formUpdate);
+        // console.log(formUpdate.getFieldsValue());
 
-    setShowModal(0); // close update modal
+        setShowModal(0); // close update modal
+      })
+      .catch(errorInfo => {});
   };
 
   //   card header
@@ -102,7 +107,7 @@ const Category = () => {
       setLoading(false);
       //   console.log(res.data);
     });
-  }, [parentId,reload]); // parentId update will cause fetch data, reload value change will also trigger reload
+  }, [parentId, reload]); // parentId update will cause fetch data, reload value change will also trigger reload
 
   return (
     <>
