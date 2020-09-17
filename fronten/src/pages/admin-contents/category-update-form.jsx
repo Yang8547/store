@@ -1,14 +1,23 @@
-import React from "react";
+import React,{useEffect,useState} from "react";
 import { Form, Input } from "antd";
 
-const UpdateFrom = props => {
+const UpdateForm = props => {
+  const [form] = Form.useForm();
+  useEffect(() => {
+    props.setFormUpdate(form);
+    // control form use Form.useForm() 
+    // set input value
+    form.setFieldsValue({
+      new_cat_name: props.currentCategory.name,
+    });
+  })
   return (
-    <Form layout="vertical">
-      <Form.Item label="Category Name">
-        <Input placeholder="Please enter category name" />
+    <Form layout="vertical" form={form}>
+      <Form.Item label="Category Name"  name="new_cat_name">
+        <Input />
       </Form.Item>
     </Form>
   );
 };
 
-export default UpdateFrom;
+export default UpdateForm;
