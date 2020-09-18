@@ -10,3 +10,6 @@ export const reqAddCategory = (categoryName, parentId) => ajax(BASE + '/manage/c
 
 // UPDATE category
 export const reqUpdateCategory = ({categoryId, categoryName}) => ajax(BASE + '/manage/category/update', {categoryId, categoryName}, 'POST')
+
+// GET PRODUCT LIST WITH PAGE
+export const reqProducts = (pageNum, pageSize) => ajax(BASE + '/manage/product/list', {pageNum, pageSize})
