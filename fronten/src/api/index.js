@@ -1,15 +1,35 @@
-import ajax from './ajax.js';
+import ajax from "./ajax.js";
 
-const BASE=''
+const BASE = "";
 
 // GET category list
-export const reqCategorys = (parentId) => ajax(BASE + '/manage/category/list', {parentId})
+export const reqCategorys = parentId =>
+  ajax(BASE + "/manage/category/list", { parentId });
 
 // ADD category
-export const reqAddCategory = (categoryName, parentId) => ajax(BASE + '/manage/category/add', {categoryName, parentId}, 'POST')
+export const reqAddCategory = (categoryName, parentId) =>
+  ajax(BASE + "/manage/category/add", { categoryName, parentId }, "POST");
 
 // UPDATE category
-export const reqUpdateCategory = ({categoryId, categoryName}) => ajax(BASE + '/manage/category/update', {categoryId, categoryName}, 'POST')
+export const reqUpdateCategory = ({ categoryId, categoryName }) =>
+  ajax(BASE + "/manage/category/update", { categoryId, categoryName }, "POST");
 
 // GET PRODUCT LIST WITH PAGE
-export const reqProducts = (pageNum, pageSize) => ajax(BASE + '/manage/product/list', {pageNum, pageSize})
+export const reqProducts = (pageNum, pageSize) =>
+  ajax(BASE + "/manage/product/list", { pageNum, pageSize });
+
+/*
+SEARCH products (name/description)
+searchType: productName/productDesc
+ */
+export const reqSearchProducts = ({
+  pageNum,
+  pageSize,
+  searchName,
+  searchType
+}) =>
+  ajax(BASE + "/manage/product/search", {
+    pageNum,
+    pageSize,
+    [searchType]: searchName
+  });
