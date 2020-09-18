@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Card, Button, Table, Space, Modal, message } from "antd";
 import { PlusOutlined, ArrowRightOutlined } from "@ant-design/icons";
-import { reqCategorys, reqUpdateCategory } from "../../api";
+import { reqCategorys, reqUpdateCategory, reqAddCategory } from "../../api";
 import LinkedButton from "../../components/linked-button";
 import UpdateForm from "./category-update-form";
 import AddForm from "./category-add-form";
@@ -13,6 +13,7 @@ const Category = () => {
   const [parentName, setParentName] = useState(""); //parent name display on table header
   const [showModal, setShowModal] = useState(0); //control visibility of modal 0 invisible 1 show add modal 2 show edit modal
   const [formUpdate, setFormUpdate] = useState(); // update form
+  const [addForm, setAddForm] = useState(); // add form
   const [reload, setReload] = useState(0);
   const [currentCategory, setCurrentCategory] = useState();
 
@@ -30,9 +31,27 @@ const Category = () => {
 
   //   add category
   const handleAddCat = () => {
-    console.log("handleAddCat");
-    setShowModal(0);
+    // console.log("handleAddCat");
+    //   validation and update
+    addForm
+      .validateFields()
+      .then(values => {
+        const categoryName = addForm.getFieldsValue().categoryName;
+        const parentId = addForm.getFieldsValue().type;
+        
+        reqAddCategory(categoryName, parentId).then(res => {
+          if (res.status == 0) {
+            message.success("Update Success!");
+          }
+          setReload(!reload); // refresh page
+          addForm.resetFields(); //reset filds, otherwise will cause field value remain the last update value
+        });
+        
+        setShowModal(0); // close update modal
+      })
+      .catch(errorInfo => {});
   };
+  
   //   show update modal
   const showUpdate = category => {
     setShowModal(2);
@@ -129,7 +148,11 @@ const Category = () => {
         onOk={handleAddCat}
         onCancel={() => setShowModal(0)}
       >
-        <AddForm />
+        <AddForm
+          categorys={categorys}
+          parentId={parentId}
+          setAddForm={setAddForm}
+        />
       </Modal>
       {/* Edit Modal */}
       <Modal

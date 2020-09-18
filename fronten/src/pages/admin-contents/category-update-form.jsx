@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Form, Input } from "antd";
 
 const UpdateForm = props => {
+   // control form use Form.useForm()
   const [form] = Form.useForm();
   useEffect(() => {
-    props.setFormUpdate(form);
-    // control form use Form.useForm()
+    props.setFormUpdate(form); 
     // set input value
     form.setFieldsValue({
       new_cat_name: props.currentCategory.name

@@ -1,24 +1,30 @@
-import React from "react";
-import { Form, Input,Select } from "antd";
+import React, { useEffect } from "react";
+import { Form, Input, Select } from "antd";
 
 const { Option } = Select;
 
 const AddForm = props => {
-  
+
+const [form] = Form.useForm();
+  useEffect(() => {
+    //  lift form
+    props.setAddForm(form);
+    // set input value
+    form.setFieldsValue({
+        type: props.parentId
+    });
+  });
+
   return (
-    <Form layout="vertical">
-      <Form.Item
-        name="type"
-        label="Parent Category"
-        initialValue = "0"
-      >
+    <Form layout="vertical" form={form}>
+      <Form.Item name="type" label="Parent Category" initialValue={props.parentId}>
         <Select>
           <Option value="0">Base</Option>
-          <Option value="1">Categoty-1</Option>
-          <Option value="2">Categoty-2</Option>
+          {/* BUG TODO when in sub-cat, the option is wrong */}
+          {props.categorys.map((option)=><Option value={option._id} key={option._id}>{option.name}</Option>)}
         </Select>
       </Form.Item>
-      <Form.Item label="Category Name">
+      <Form.Item label="Category Name" name="categoryName">
         <Input placeholder="Please enter category name" />
       </Form.Item>
     </Form>
