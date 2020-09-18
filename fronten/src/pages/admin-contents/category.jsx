@@ -43,7 +43,7 @@ const Category = () => {
           if (res.status == 0) {
             message.success("Update Success!");
           }
-          setReload(!reload); // refresh page
+          setReload(!reload); // refresh page （actually, this line is unnessary
           addForm.resetFields(); //reset filds, otherwise will cause field value remain the last update value
         });
         
