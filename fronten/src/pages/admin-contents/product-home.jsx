@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Card, Select, Input, Button, Table, message } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined, PropertySafetyFilled } from "@ant-design/icons";
 import LinkButton from "../../components/linked-button";
 import { reqProducts, reqSearchProducts } from "../../api/index";
 
 const { Option } = Select;
 const PAGE_SIZE = 3; //page size
 
-const ProductHome = () => {
+const ProductHome = (props) => {
   const [products, setProducts] = useState([]);
   const [total, setTotal] = useState(0);
   const [pageNum, setPageNum] = useState(1);
@@ -87,7 +87,7 @@ const ProductHome = () => {
       width: 100,
       render: record => (
         <span>
-          <LinkButton>Detail</LinkButton>
+          <LinkButton onClick={()=>props.history.push('/admin/product/detail',record)}>Detail</LinkButton>
           <LinkButton>Edit</LinkButton>
         </span>
       )
