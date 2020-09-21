@@ -2,7 +2,8 @@ import React from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import ProductHome from './product-home';
 import ProductAddOrUpdate from './product-add-or-update';
-import ProductDetail from './product-detail'
+import ProductDetail from './product-detail';
+import './product.css'
 
 const Product = () => {
   return (
