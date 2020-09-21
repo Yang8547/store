@@ -34,6 +34,10 @@ export const reqSearchProducts = ({
     [searchType]: searchName
   });
 
-// GET category 
+// GET category
 export const reqCategory = categoryId =>
   ajax(BASE + "/manage/category/info", { categoryId });
+
+// Update product status (on/off market)
+export const reqUpdateStatus = (productId, status) =>
+  ajax(BASE + "/manage/product/updateStatus", { productId, status }, "POST");

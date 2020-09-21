@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Card, Select, Input, Button, Table, message } from "antd";
 import { PlusOutlined, PropertySafetyFilled } from "@ant-design/icons";
 import LinkButton from "../../components/linked-button";
-import { reqProducts, reqSearchProducts } from "../../api/index";
+import { reqProducts, reqSearchProducts, reqUpdateStatus } from "../../api/index";
 
 const { Option } = Select;
 const PAGE_SIZE = 3; //page size
@@ -39,6 +39,18 @@ const ProductHome = (props) => {
   useEffect(() => {
     getProducts(pageNum);
   }, [pageNum]);
+
+  /*
+  update product status on/off market
+  */
+  const updateStatus = (productID, status)=>{
+    reqUpdateStatus(productID,status).then((res)=>{
+      message.success("updated!");
+      //refresh
+      getProducts(pageNum);
+    }
+    )
+  }
 
   const title = (
     <span>
@@ -77,8 +89,8 @@ const ProductHome = (props) => {
       width: 100,
       render: record => (
         <span>
-          <Button type="primary">OFF</Button>
-          <span>OnMarket</span>
+          <Button type="primary" onClick={()=>updateStatus(record._id,record.status===1?0:1)}>{record.status===1?'OFF':'ON'}</Button>
+          <span>{record.status===1?'OnMarket':'OffMarket'}</span>
         </span>
       )
     },
