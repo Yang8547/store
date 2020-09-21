@@ -33,3 +33,7 @@ export const reqSearchProducts = ({
     pageSize,
     [searchType]: searchName
   });
+
+// GET category 
+export const reqCategory = categoryId =>
+  ajax(BASE + "/manage/category/info", { categoryId });

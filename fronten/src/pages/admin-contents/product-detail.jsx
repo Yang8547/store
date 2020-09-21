@@ -1,20 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card, List } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
-import LinkedButton from "../../components/linked-button"
+import LinkedButton from "../../components/linked-button";
+import { reqCategory } from "../../api/index";
 
 const Item = List.Item;
 const ProductDetail = props => {
+  const [cName1, setCName1] = useState(); // category
+  const [cName2, setCName2] = useState(); // sub category
   const product = props.location.state;
+
+  useEffect(() => {
+    // if base category
+    if (product.pCategoryId === '0') {
+      reqCategory(product.categoryId).then(res => setCName1(res.data.name));
+    } else {
+        // if not base category get cat name and parent cat name
+      Promise.all(
+        [reqCategory(product.categoryId),
+        reqCategory(product.pCategoryId)]
+      ).then(res => {
+        setCName1(res[1].data.name);
+        setCName2(res[0].data.name)
+      });
+    }
+  });
   const title = (
     <span>
-      <LinkedButton onClick={()=>{props.history.goBack()}}>
-      <ArrowLeftOutlined
-        type="arrow-left"
-        style={{ marginRight: 10, fontSize: 20 }}
-      />
+      <LinkedButton
+        onClick={() => {
+          props.history.goBack();
+        }}
+      >
+        <ArrowLeftOutlined
+          type="arrow-left"
+          style={{ marginRight: 10, fontSize: 20 }}
+        />
       </LinkedButton>
-      
+
       <span>PRODUCT DETAIL</span>
     </span>
   );
@@ -35,7 +58,7 @@ const ProductDetail = props => {
         </Item>
         <Item>
           <span className="left">Category:</span>
-          <span>cat-1</span>
+          <span>{cName1} {cName2?"--> "+cName2:''}</span>
         </Item>
         <Item>
           <span className="left">Images:</span>
