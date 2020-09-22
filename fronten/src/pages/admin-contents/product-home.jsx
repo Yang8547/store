@@ -64,7 +64,7 @@ const ProductHome = (props) => {
   );
 
   const extra = (
-    <Button type="primary">
+    <Button type="primary" onClick={()=>props.history.push('/admin/product/addorupdate')}>
       <PlusOutlined />
       ADD PRODUCT
     </Button>
