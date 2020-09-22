@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Card, Form, Input, Cascader, Button, message } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import LinkedButton from "../../components/linked-button";
-import { number } from "prop-types";
+import { reqCategorys } from "../../api/index";
 // form layout
 const formItemLayout = {
   labelCol: {
@@ -16,23 +16,45 @@ const { TextArea } = Input;
 
 const ProductAddOrUpdate = props => {
   // test cascader options
-  const test_options = [
-    {
-      value: "zhejiang",
-      label: "Zhejiang",
-      isLeaf: false
-    },
-    {
-      value: "jiangsu",
-      label: "Jiangsu",
-      isLeaf: false
-    }
-  ];
-  const [options, setOptions] = useState(test_options);
+  //   const test_options = [
+  //     {
+  //       value: "zhejiang",
+  //       label: "Zhejiang",
+  //       isLeaf: false
+  //     },
+  //     {
+  //       value: "jiangsu",
+  //       label: "Jiangsu",
+  //       isLeaf: false
+  //     }
+  //   ];
+  const [options, setOptions] = useState([]);
+
+  useEffect(() => {
+    //   get base category list
+    getCategories("0");
+  });
+
+  const getCategories = parentID => {
+    reqCategorys(parentID).then(res => {
+      if (res.status === 0) {
+        const fetch_options = res.data.map(cat => {
+          // return option object
+          return {
+            value: cat._id,
+            label: cat.name,
+            isLeaf: false
+          };
+        });
+        setOptions(fetch_options)
+      }
+    });
+  };
 
   /*
   load children options
-   */  
+   */
+
   const loadData = selectedOptions => {
     //   selected option object
     const targetOption = selectedOptions[0];
@@ -54,7 +76,7 @@ const ProductAddOrUpdate = props => {
       ];
       setOptions([...options]);
     }, 1000);
-  }
+  };
 
   const title = (
     <span>
