@@ -33,11 +33,13 @@ const ProductAddOrUpdate = props => {
   useEffect(() => {
     //   get base category list
     getCategories("0");
-  });
+  },[]);
 
+  //   fetch category list base
   const getCategories = parentID => {
     reqCategorys(parentID).then(res => {
       if (res.status === 0) {
+        //   format options array
         const fetch_options = res.data.map(cat => {
           // return option object
           return {
@@ -46,7 +48,8 @@ const ProductAddOrUpdate = props => {
             isLeaf: false
           };
         });
-        setOptions(fetch_options)
+
+        setOptions(fetch_options);
       }
     });
   };
@@ -61,21 +64,28 @@ const ProductAddOrUpdate = props => {
     // loading effect
     targetOption.loading = true;
 
-    // load options lazily
-    setTimeout(() => {
+    // load sub categories
+    reqCategorys(targetOption.value).then(res => {
       targetOption.loading = false;
-      targetOption.children = [
-        {
-          label: `${targetOption.label} Dynamic 1`,
-          value: "dynamic1"
-        },
-        {
-          label: `${targetOption.label} Dynamic 2`,
-          value: "dynamic2"
-        }
-      ];
+
+      //   format options array
+      const children_options = res.data.map(cat => {
+        // return option object
+        return {
+          value: cat._id,
+          label: cat.name,
+          isLeaf: true
+        };
+      });
+      //   if no sub category
+      if (children_options.length == 0) {
+        targetOption.isLeaf = true;
+      }
+      //   add children category list to taget option
+      targetOption.children = children_options;
+      //   update state
       setOptions([...options]);
-    }, 1000);
+    });
   };
 
   const title = (
