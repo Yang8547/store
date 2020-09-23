@@ -100,7 +100,7 @@ const ProductHome = (props) => {
       render: record => (
         <span>
           <LinkButton onClick={()=>props.history.push('/admin/product/detail',record)}>Detail</LinkButton>
-          <LinkButton>Edit</LinkButton>
+          <LinkButton onClick={()=>props.history.push('/admin/product/addorupdate',record)}>Edit</LinkButton>
         </span>
       )
     }

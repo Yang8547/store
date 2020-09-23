@@ -28,12 +28,28 @@ const ProductAddOrUpdate = props => {
   //       isLeaf: false
   //     }
   //   ];
-  const [options, setOptions] = useState([]);
+  const [options, setOptions] = useState([]); // category cascader options
+  const props_product = props.location.state || {}; // product state pass from router
+  const isUpdate = !!props_product._id; //get boolean value of product_id exist, if not then it is 'add'
+  // because cascader need values be array, so here is to form the cascader array
+  const categoryIds = []
+  if(isUpdate) {
+    // if product is base category
+    if(props_product.pCategoryId==='0') {
+      categoryIds.push(props_product.categoryId)
+    } else {
+      // if product has subcategory category
+      categoryIds.push(props_product.pCategoryId)
+      categoryIds.push(props_product.categoryId)
+    }
+  }
+  props_product.categoryIds = categoryIds;
+  const [product, setProduct] = useState(props_product); // product state
 
   useEffect(() => {
     //   get base category list
     getCategories("0");
-  },[]);
+  }, []);
 
   //   fetch category list base
   const getCategories = parentID => {
@@ -108,6 +124,7 @@ const ProductAddOrUpdate = props => {
   const onFinish = values => {
     console.log("Received values of form: ", values);
   };
+  
   return (
     <div>
       <Card title={title} className="product-add">
@@ -115,6 +132,7 @@ const ProductAddOrUpdate = props => {
           <Form.Item
             label="Product Name"
             name="name"
+            initialValue = {product.name}
             rules={[
               {
                 required: true,
@@ -127,6 +145,7 @@ const ProductAddOrUpdate = props => {
           <Form.Item
             label="Product Description"
             name="desc"
+            initialValue = {product.desc}
             rules={[
               {
                 required: true,
@@ -139,6 +158,7 @@ const ProductAddOrUpdate = props => {
           <Form.Item
             label="Product Price"
             name="price"
+            initialValue = {product.price}
             rules={[
               {
                 required: true,
@@ -161,7 +181,7 @@ const ProductAddOrUpdate = props => {
           </Form.Item>
 
           {/* cascader */}
-          <Form.Item label="Product Category" name="category">
+          <Form.Item label="Product Category" name="category" initialValue={product.categoryIds}>
             <Cascader options={options} loadData={loadData} />
           </Form.Item>
 
