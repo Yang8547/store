@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import { Card, Form, Input, Cascader, Button, message } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import LinkedButton from "../../components/linked-button";
 import { reqCategorys } from "../../api/index";
+import PicturesWall from "./picture-wall"
 // form layout
 const formItemLayout = {
   labelCol: {
@@ -33,6 +34,10 @@ const ProductAddOrUpdate = props => {
   props_product.categoryIds = categoryIds;
   const [product, setProduct] = useState(props_product); // product state
 
+  /**
+   * ref for picture wall to access child function from parent
+   */
+  const pw = useRef(null);
   useEffect(() => {
     // if UPDATE and has sub cat get subcategory list for display in cascader
     if (isUpdate && props_product.pCategoryId !== "0") {
@@ -147,6 +152,8 @@ const ProductAddOrUpdate = props => {
    */
   const onFinish = values => {
     console.log("Received values of form: ", values);
+    console.log(pw.current.getImgs()); //get filelists from child component picture wall
+    
   };
 
   return (
@@ -219,6 +226,10 @@ const ProductAddOrUpdate = props => {
             <Cascader options={options} loadData={loadData} />
           </Form.Item>
 
+          {/* picture wall for upload pic */}
+        <Form.Item label="Images" name="images">
+            <PicturesWall ref={pw}/>
+        </Form.Item>
           {/* submit button */}
           <Form.Item>
             <Button type="primary" htmlType="submit">
