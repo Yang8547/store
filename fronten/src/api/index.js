@@ -44,3 +44,6 @@ export const reqUpdateStatus = (productId, status) =>
 
 // DELETE image
 export const reqDeleteImg = (name) => ajax(BASE + '/manage/img/delete', {name}, 'POST')
+
+// ADD/UPDATE product (product_id?)
+export const reqAddOrUpdateProduct = (product) => ajax(BASE + '/manage/product/' + ( product._id?'update':'add'), product, 'POST')

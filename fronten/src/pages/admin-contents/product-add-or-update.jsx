@@ -1,10 +1,11 @@
-import React, { useState, useEffect,useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Card, Form, Input, Cascader, Button, message } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import LinkedButton from "../../components/linked-button";
 import { reqCategorys } from "../../api/index";
 import PicturesWall from "./picture-wall";
 import RichEditor from "./rich-editor";
+import {reqAddOrUpdateProduct} from "../../api/index"
 // form layout
 const formItemLayout = {
   labelCol: {
@@ -75,30 +76,32 @@ const ProductAddOrUpdate = props => {
           setOptions(fetch_options);
         }
       });
-    } else{
-        Promise.all([reqCategorys(0),reqCategorys(parentID)]).then(res=>{
-            const fetch_options = res[0].data.map(cat => {
-                // return option object
-                return {
-                  value: cat._id,
-                  label: cat.name,
-                  isLeaf: false
-                };
-            });
-            const children_options = res[1].data.map(cat => {
-                // return option object
-                return {
-                  value: cat._id,
-                  label: cat.name,
-                  isLeaf: true
-                };
-            });
-            // finde current option
-            const targetOption = fetch_options.find(option => option.value===parentID)
-            // link child options
-            targetOption.children = children_options
-            setOptions(fetch_options);
-        })
+    } else {
+      Promise.all([reqCategorys(0), reqCategorys(parentID)]).then(res => {
+        const fetch_options = res[0].data.map(cat => {
+          // return option object
+          return {
+            value: cat._id,
+            label: cat.name,
+            isLeaf: false
+          };
+        });
+        const children_options = res[1].data.map(cat => {
+          // return option object
+          return {
+            value: cat._id,
+            label: cat.name,
+            isLeaf: true
+          };
+        });
+        // finde current option
+        const targetOption = fetch_options.find(
+          option => option.value === parentID
+        );
+        // link child options
+        targetOption.children = children_options;
+        setOptions(fetch_options);
+      });
     }
   };
 
@@ -160,7 +163,47 @@ const ProductAddOrUpdate = props => {
     console.log("Received values of form: ", values);
     console.log(pw.current.getImgs()); //get filelists from child component picture wall
     console.log(richEditorConten.current.getDetaiContent());
+    // 1. collect data, wrap to product obj
+    const { name, desc, price, categoryIds } = values; //form input
+    let pCategoryId, categoryId; //cascader cat ids
+    if (categoryIds.length === 1) {
+      pCategoryId = "0";
+      categoryId = categoryIds[0];
+    } else {
+      pCategoryId = categoryIds[0];
+      categoryId = categoryIds[1];
+    }
+    const imgs = pw.current.getImgs(); // image from picture wall
+    const detail = richEditorConten.current.getDetaiContent(); //content from rich editor
+
+    // wrap product obj
+    const product_for_add_or_update = {
+      name,
+      desc,
+      price,
+      imgs,
+      detail,
+      pCategoryId,
+      categoryId
+    };
+
+    // if it is UPDATE, add _id
+    if (isUpdate) {
+        product_for_add_or_update._id = product._id;
+    }
+    console.log("product_for_add_or_update",product_for_add_or_update);
     
+
+    // 2. SEND request to add or update product
+    const result = reqAddOrUpdateProduct(product_for_add_or_update).then(res => {
+    
+      if (res.status === 0) {
+        message.success(`${isUpdate ? "UPDATE" : "ADD"}success!`);
+        props.history.goBack();
+      } else {
+        message.error(`${this.isUpdate ? "UPDATE" : "ADD"}fail!`);
+      }
+    });
   };
 
   return (
@@ -221,7 +264,7 @@ const ProductAddOrUpdate = props => {
           {/* cascader */}
           <Form.Item
             label="Product Category"
-            name="category"
+            name="categoryIds"
             initialValue={product.categoryIds}
             rules={[
               {
@@ -234,13 +277,18 @@ const ProductAddOrUpdate = props => {
           </Form.Item>
 
           {/* picture wall for upload pic */}
-        <Form.Item label="Images" name="images">
-            <PicturesWall ref={pw} images={product.imgs}/>
-        </Form.Item>
-        {/* Rich editor */}
-        <Form.Item label="Detail" name="detail" labelCol={{span: 2}} wrapperCol={{span: 20}}>
-            <RichEditor ref={richEditorConten} detail={product.detail}/>
-        </Form.Item>
+          <Form.Item label="Images" name="images">
+            <PicturesWall ref={pw} images={product.imgs} />
+          </Form.Item>
+          {/* Rich editor */}
+          <Form.Item
+            label="Detail"
+            name="detail"
+            labelCol={{ span: 2 }}
+            wrapperCol={{ span: 20 }}
+          >
+            <RichEditor ref={richEditorConten} detail={product.detail} />
+          </Form.Item>
           {/* submit button */}
           <Form.Item>
             <Button type="primary" htmlType="submit">
