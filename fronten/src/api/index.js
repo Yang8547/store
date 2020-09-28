@@ -41,3 +41,6 @@ export const reqCategory = categoryId =>
 // Update product status (on/off market)
 export const reqUpdateStatus = (productId, status) =>
   ajax(BASE + "/manage/product/updateStatus", { productId, status }, "POST");
+
+// DELETE image
+export const reqDeleteImg = (name) => ajax(BASE + '/manage/img/delete', {name}, 'POST')

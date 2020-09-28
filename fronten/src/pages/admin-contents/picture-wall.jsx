@@ -1,6 +1,7 @@
 import React from "react";
-import { Upload, Modal,message } from "antd";
+import { Upload, Modal, message } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
+import { reqDeleteImg } from "../../api/index";
 
 function getBase64(file) {
   return new Promise((resolve, reject) => {
@@ -51,7 +52,7 @@ export default class PicturesWall extends React.Component {
     event: {  },
     }
  */
-  handleChange = ({ file, fileList }) => {
+  handleChange = async ({ file, fileList }) => {
     // 一旦上传成功, 将当前上传的file的信息修正(name, url)
     if (file.status === "done") {
       const result = file.response; // {status: 0, data: {name: 'xxx.jpg', url: '图片地址'}}
@@ -64,15 +65,23 @@ export default class PicturesWall extends React.Component {
       } else {
         message.error("upload fail");
       }
+    } else if (file.status === "removed") {
+      // delete image
+      const result = await reqDeleteImg(file.name);
+      if (result.status === 0) {
+        message.success("delete success!");
+      } else {
+        message.error("delete fail!");
+      }
     }
 
     //更新fileList状态
     this.setState({ fileList });
   };
 
-  getImgs = ()=>{
-      return this.state.fileList.map(img=>img.name)
-  }
+  getImgs = () => {
+    return this.state.fileList.map(img => img.name);
+  };
 
   render() {
     const { previewVisible, previewImage, fileList, previewTitle } = this.state;
