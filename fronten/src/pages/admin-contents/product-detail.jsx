@@ -4,6 +4,8 @@ import { ArrowLeftOutlined } from "@ant-design/icons";
 import LinkedButton from "../../components/linked-button";
 import { reqCategory } from "../../api/index";
 
+const BASE_IMG_URL = 'http://localhost:5000/upload/'
+
 const Item = List.Item;
 const ProductDetail = props => {
   const [cName1, setCName1] = useState(); // category
@@ -64,7 +66,7 @@ const ProductDetail = props => {
           <span className="left">Images:</span>
           <span>
             {product.imgs.map(img => (
-              <img className="product-img" src="" alt="" />
+              <img className="product-img" src={BASE_IMG_URL+img} alt="" />
             ))}
           </span>
         </Item>

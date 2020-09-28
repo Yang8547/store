@@ -191,11 +191,11 @@ const ProductAddOrUpdate = props => {
     if (isUpdate) {
         product_for_add_or_update._id = product._id;
     }
-    console.log("product_for_add_or_update",product_for_add_or_update);
+    
     
 
     // 2. SEND request to add or update product
-    const result = reqAddOrUpdateProduct(product_for_add_or_update).then(res => {
+    reqAddOrUpdateProduct(product_for_add_or_update).then(res => {
     
       if (res.status === 0) {
         message.success(`${isUpdate ? "UPDATE" : "ADD"}success!`);

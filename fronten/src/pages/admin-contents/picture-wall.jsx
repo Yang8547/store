@@ -38,7 +38,7 @@ export default class PicturesWall extends React.Component {
     let fileList = []
 
     // get initial product images
-    const {imgs} = this.props
+    const imgs = this.props.images
     if (imgs && imgs.length>0) {
       fileList = imgs.map((img, index) => ({
         uid: -index, // file unique id
