@@ -12,6 +12,8 @@ function getBase64(file) {
   });
 }
 
+const BASE_IMG_URL = 'http://localhost:5000/upload/'
+
 export default class PicturesWall extends React.Component {
   /**
    * file obj
@@ -29,6 +31,29 @@ export default class PicturesWall extends React.Component {
     previewTitle: "",
     fileList: []
   };
+
+  constructor (props) {
+    super(props)
+
+    let fileList = []
+
+    // get initial product images
+    const {imgs} = this.props
+    if (imgs && imgs.length>0) {
+      fileList = imgs.map((img, index) => ({
+        uid: -index, // file unique id
+        name: img, // image name
+        status: 'done', 
+        url: BASE_IMG_URL + img
+      }))
+    }
+
+    this.state = {
+      previewVisible: false, 
+      previewImage: '', 
+      fileList 
+    }
+  }
 
   handleCancel = () => this.setState({ previewVisible: false });
 

@@ -228,7 +228,7 @@ const ProductAddOrUpdate = props => {
 
           {/* picture wall for upload pic */}
         <Form.Item label="Images" name="images">
-            <PicturesWall ref={pw}/>
+            <PicturesWall ref={pw} images={product.imgs}/>
         </Form.Item>
           {/* submit button */}
           <Form.Item>
