@@ -3,7 +3,8 @@ import { Card, Form, Input, Cascader, Button, message } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import LinkedButton from "../../components/linked-button";
 import { reqCategorys } from "../../api/index";
-import PicturesWall from "./picture-wall"
+import PicturesWall from "./picture-wall";
+import RichEditor from "./rich-editor";
 // form layout
 const formItemLayout = {
   labelCol: {
@@ -38,6 +39,11 @@ const ProductAddOrUpdate = props => {
    * ref for picture wall to access child function from parent
    */
   const pw = useRef(null);
+  /**
+   * ref for rich editor to access child function from parent
+   */
+  const richEditorConten = useRef();
+
   useEffect(() => {
     // if UPDATE and has sub cat get subcategory list for display in cascader
     if (isUpdate && props_product.pCategoryId !== "0") {
@@ -153,6 +159,7 @@ const ProductAddOrUpdate = props => {
   const onFinish = values => {
     console.log("Received values of form: ", values);
     console.log(pw.current.getImgs()); //get filelists from child component picture wall
+    console.log(richEditorConten.current.getDetaiContent());
     
   };
 
@@ -229,6 +236,10 @@ const ProductAddOrUpdate = props => {
           {/* picture wall for upload pic */}
         <Form.Item label="Images" name="images">
             <PicturesWall ref={pw} images={product.imgs}/>
+        </Form.Item>
+        {/* Rich editor */}
+        <Form.Item label="Detail" name="detail" labelCol={{span: 2}} wrapperCol={{span: 20}}>
+            <RichEditor ref={richEditorConten} detail={product.detail}/>
         </Form.Item>
           {/* submit button */}
           <Form.Item>
