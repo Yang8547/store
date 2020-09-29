@@ -7,3 +7,7 @@ back-end: Node.js
 run backend: node backen/server.js
 
 run frontend: cd fronted/  npm start
+
+### Update
+
+Add back office
